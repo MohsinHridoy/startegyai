@@ -12,17 +12,13 @@ import { AuthProvider } from './context/AuthContext';
 
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Adjust based on your login logic
-
   return (
-    <AuthProvider value={{ isLoggedIn, setIsLoggedIn }}> {/* Pass values to AuthProvider */}
+    <AuthProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Hero />} />
           <Route path="/solutions" element={<Solutions />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-
         </Routes>
       </Router>
     </AuthProvider>
@@ -30,3 +26,4 @@ const App = () => {
 };
 
 export default App;
+

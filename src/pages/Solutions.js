@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import backgroundImage from '../assets/background_image.png'; // Adjust the path as needed
+import backgroundImage from '../assets/background_image.png';
 import jsPDF from 'jspdf';
-import AuthContext from '../context/AuthContext'; // Use default export
-import Navbar from '../component/Navbar'; // Import the Navbar component
+import AuthContext from '../context/AuthContext';
+import Navbar from '../component/Navbar';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const SolutionsContainer = styled.div`
   display: flex;
@@ -18,29 +19,27 @@ const SolutionsContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 40px; /* Set font size to 29px */
-  font-family: 'Marriweather', serif; /* Set font family */
-  font-weight: 400; /* Set font weight to 400 */
-  margin-bottom: 10px; /* Add margin below the title */
-    text-align: center; /* Center the text */
-    margin-top: 50px; /* Use a negative margin to move it up */
-
+  font-size: 40px;
+  font-family: 'Marriweather', serif;
+  font-weight: 400;
+  margin-bottom: 10px;
+  text-align: center;
+  margin-top: 50px;
 `;
 
 const SubHeading = styled.h2`
-  font-size: 16px; /* Set a suitable font size for the subheading */
-  font-family: 'Arial', sans-serif; /* Use Arial font */
-  font-weight: 400; /* Set font weight to 400 */
-  text-align: center; /* Center the text */
-  margin-bottom: 20px; /* Space below the subheading */
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const Textbox = styled.textarea`
   width: 200%;
   max-width: 1000px;
   height: 50%;
-      margin-top: 50px; /* Use a negative margin to move it up */
-
+  margin-top: 50px;
   margin-bottom: 20px;
   padding: 10px;
   border: none;
@@ -50,7 +49,7 @@ const Textbox = styled.textarea`
 
 const DownloadButton = styled.button`
   padding: 10px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 5px;
@@ -62,20 +61,20 @@ const DownloadButton = styled.button`
 `;
 
 const Solutions = ({ generatedText }) => {
-  const { isLoggedIn } = useContext(AuthContext); // Check the user's login status
+  const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const downloadPDF = () => {
-    // if (!isLoggedIn) {
-    //   // Redirect to login page if not logged in
-    //   window.location.href = '/login'; // Adjust the route as needed
-    //   return;
-    // }
-
+    if (!isLoggedIn) {
+      navigate('/login', { state: { from: '/solutions' } });
+      return;
+    }
+  
     // if (typeof generatedText !== 'string' || generatedText.trim() === '') {
     //   console.error('No content to download as PDF');
     //   return;
     // }
-
+  
     const doc = new jsPDF();
     const margin = 10;
     const pageWidth = doc.internal.pageSize.getWidth() - margin * 2;
@@ -88,7 +87,7 @@ const Solutions = ({ generatedText }) => {
     <>
       <Navbar /> 
       <SolutionsContainer>
-        <Title>Staretegy AI Helps helps you make<br /> your plan better and smarter</Title>
+        <Title>Strategy AI Helps you make<br /> your plan better and smarter</Title>
         <SubHeading>More than 40,000+ already made their plan with us—normal, better, and smarter.</SubHeading>
         <Textbox value={generatedText} readOnly />
         <DownloadButton onClick={downloadPDF}>Download as PDF</DownloadButton>

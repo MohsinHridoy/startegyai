@@ -1,47 +1,42 @@
+// src/component/Navbar.js
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Nav = styled.nav`
-  position: sticky;
-  top: 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background: #282c34;
-  color: white;
-  z-index: 1000;
+  align-items: center; // Align items vertically
+  padding: 10px;
+  background: #f8f9fa;
 `;
 
 const Title = styled.h1`
-  margin: 0;
+  margin: 0; // Remove default margin
+  font-size: 24px; // Set font size
+  color: black; // Set text color
 `;
 
-const NavList = styled.ul`
-  list-style: none;
-  display: flex;
-  margin: 0;
-`;
-
-const NavItem = styled.li`
+const NavItem = styled(Link)`
   margin: 0 15px;
+  text-decoration: none;
+  color: black;
 `;
 
-const Navbar = () => {
+const Navbar = ({ userEmail }) => {
   return (
     <Nav>
-      <Title>StrategyAI</Title>
-      <NavList>
-        <NavItem>
-          <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Home</Link>
-        </NavItem>
-        <NavItem>
-          <Link to="/login" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
-        </NavItem>
-      </NavList>
+      <Title>strategy.ai</Title> {/* Add the title here */}
+      <div>
+        <NavItem to="/">Home</NavItem>
+        {userEmail ? (
+          <NavItem to="/profile">{userEmail.split(" ").slice(0, 2).join(" ")}</NavItem>
+        ) : (
+          <NavItem to="/login">Login</NavItem>
+        )}
+      </div>
     </Nav>
   );
 };
 
-export default React.memo(Navbar);
+export default Navbar;

@@ -1,9 +1,12 @@
 // src/component/Login.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../component/Navbar'; // Import the Navbar component
-import backgroundImage from '../assets/background_image.png'; // Import the background image
+import Navbar from '../component/Navbar';
+import backgroundImage from '../assets/background_image.png';
+import { auth } from '../firebase'; // Import Firebase auth
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import AuthContext from '../context/AuthContext'; // Import AuthContext
 
 const LoginContainer = styled.div`
   display: flex;
@@ -22,16 +25,16 @@ const Title = styled.h1`
 `;
 
 const FormContainer = styled.div`
-  background-color: white; // White background for the form
+  background-color: white;
   padding: 20px;
-  border-radius: 10px; // Rounded corners
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); // Soft shadow for depth
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 `;
 
 const Form = styled.form`
   display: flex;
-  flex-direction: column; /* Ensures items are stacked vertically */
-  align-items: center; /* Center items horizontally */
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Input = styled.input`
@@ -39,7 +42,7 @@ const Input = styled.input`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 300px; // Adjust as needed
+  width: 300px;
 `;
 
 const Button = styled.button`
@@ -49,7 +52,7 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 300px; // Match the width of the input fields
+  width: 300px;
 
   &:hover {
     background-color: #45a049;
@@ -57,11 +60,11 @@ const Button = styled.button`
 `;
 
 const GoogleButton = styled(Button)`
-  background-color: #db4437; // Google red
-  margin-top: 10px; // Add space above the Google button
+  background-color: #db4437;
+  margin-top: 10px;
 
   &:hover {
-    background-color: #c1352e; // Darker shade for hover
+    background-color: #c1352e;
   }
 `;
 
@@ -75,37 +78,59 @@ const NoAccountText = styled.p`
   }
 `;
 
-const Login = ({ setIsLoggedIn }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
+  const { setIsLoggedIn, setUserEmail } = useContext(AuthContext); // Use context
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (username && password) {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, username, password);
       setIsLoggedIn(true);
-      navigate('/solutions'); // Redirect after login
-    } else {
-      alert("Please enter valid credentials.");
+      setUserEmail(userCredential.user.email);
+      navigate('/solutions');
+    } catch (error) {
+      alert(error.message);
     }
   };
 
-  const handleGoogleLogin = () => {
-    // Add your Google login logic here
-    alert('Google login is not implemented yet.');
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, username, password);
+      setIsLoggedIn(true);
+      setUserEmail(userCredential.user.email);
+      navigate('/solutions');
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
+      setIsLoggedIn(true);
+      setUserEmail(userCredential.user.email);
+      navigate('/solutions');
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
     <>
       <Navbar />
-
       <LoginContainer>
-        <Title>Login</Title>
+        <Title>{isLogin ? 'Login' : 'Sign Up'}</Title>
         <FormContainer>
-          <Form onSubmit={handleLogin}>
+          <Form onSubmit={isLogin ? handleLogin : handleSignup}>
             <Input
-              type="text"
-              placeholder="Username"
+              type="email"
+              placeholder="Email"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -117,13 +142,13 @@ const Login = ({ setIsLoggedIn }) => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Button type="submit">Login</Button>
+            <Button type="submit">{isLogin ? 'Login' : 'Sign Up'}</Button>
             <GoogleButton type="button" onClick={handleGoogleLogin}>
               Continue with Google
             </GoogleButton>
           </Form>
-          <NoAccountText onClick={() => navigate('/signup')}>
-            Don't have an account? Sign Up
+          <NoAccountText onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login"}
           </NoAccountText>
         </FormContainer>
       </LoginContainer>
