@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Hero from './component/Hero';
+import Solutions from './pages/Solutions';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 
-function App() {
+import { AuthProvider } from './context/AuthContext';
+
+
+
+
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Adjust based on your login logic
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider value={{ isLoggedIn, setIsLoggedIn }}> {/* Pass values to AuthProvider */}
+      <Router>
+        <Routes>
+          <Route path="/" element={<Hero />} />
+          <Route path="/solutions" element={<Solutions />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
-}
+};
 
 export default App;
