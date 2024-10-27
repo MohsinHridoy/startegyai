@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../assets/background_image.png'; // Adjust the path as needed
-// import Navbar from '../component/Navbar'; // Import the Navbar component
+import Navbar from '../component/Navbar'; // Import the Navbar component
 
 const SignUpContainer = styled.div`
   display: flex;
@@ -78,7 +78,7 @@ const SignUp = () => {
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <SignUpContainer>
         <Title>Sign Up</Title>
         <form onSubmit={handleSignUp}>

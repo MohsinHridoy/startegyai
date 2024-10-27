@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import backgroundImage from '../assets/background_image.png'; // Adjust the path as needed
 import jsPDF from 'jspdf';
 import AuthContext from '../context/AuthContext'; // Use default export
-// import Navbar from '../component/Navbar'; // Import the Navbar component
+import Navbar from '../component/Navbar'; // Import the Navbar component
 
 const SolutionsContainer = styled.div`
   display: flex;
@@ -86,7 +86,7 @@ const Solutions = ({ generatedText }) => {
 
   return (
     <>
-      {/* <Navbar /> Render the Navbar */}
+      <Navbar /> Render the Navbar
       <SolutionsContainer>
         <Title>Staretegy AI Helps helps you make<br /> your plan better and smarter</Title>
         <SubHeading>More than 40,000+ already made their plan with us—normal, better, and smarter.</SubHeading>

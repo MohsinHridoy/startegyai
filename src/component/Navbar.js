@@ -1,108 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../assets/background_image.png'; // Adjust the path as needed
-import Navbar from './Navbar'; // Adjust the import path as needed
 
-const SignUpContainer = styled.div`
+const Nav = styled.nav`
+  position: sticky;
+  top: 0;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  height: calc(100vh - 60px); // Adjust height to account for the navbar
-  color: black;
   padding: 20px;
-  background: url(${backgroundImage}) no-repeat center center;
-  background-size: cover;
+  background: #282c34;
+  color: white;
+  z-index: 1000;
 `;
 
 const Title = styled.h1`
-  margin: 20px 0;
+  margin: 0;
 `;
 
-const Input = styled.input`
-  margin-bottom: 15px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 300px; // Adjust as needed
+const NavList = styled.ul`
+  list-style: none;
+  display: flex;
+  margin: 0;
 `;
 
-const Button = styled.button`
-  padding: 10px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 10px;
-
-  &:hover {
-    background-color: #45a049;
-  }
+const NavItem = styled.li`
+  margin: 0 15px;
 `;
 
-const GoogleButton = styled(Button)`
-  background-color: #db4437; // Google red
-`;
-
-const SignInText = styled.p`
-  margin-top: 15px;
-  color: #007bff;
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const SignUp = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-
-  const handleSignUp = (e) => {
-    e.preventDefault();
-    // Add your sign-up logic here
-    if (email && password) {
-      alert('Sign-up successful!');
-      navigate('/login'); // Redirect to login page after sign-up
-    } else {
-      alert('Please enter valid credentials.');
-    }
-  };
-
-  const handleGoogleSignUp = () => {
-    alert('Google sign-up is not implemented yet.');
-  };
-
+const Navbar = () => {
   return (
-    <>
-      <Navbar />
-      <SignUpContainer>
-        <Title>Sign Up</Title>
-        <form onSubmit={handleSignUp}>
-          <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Button type="submit">Sign Up</Button>
-        </form>
-        <GoogleButton onClick={handleGoogleSignUp}>Continue with Google</GoogleButton>
-        <SignInText onClick={() => navigate('/login')}>Already have an account? Sign In</SignInText>
-      </SignUpContainer>
-    </>
+    <Nav>
+      <Title>StrategyAI</Title>
+      <NavList>
+        <NavItem>
+          <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Home</Link>
+        </NavItem>
+        <NavItem>
+          <Link to="/login" style={{ color: 'white', textDecoration: 'none' }}>Login</Link>
+        </NavItem>
+      </NavList>
+    </Nav>
   );
 };
 
-export default SignUp;
+export default React.memo(Navbar);

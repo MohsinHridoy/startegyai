@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import backgroundImage from '../assets/background_image.png'; // Adjust the path as needed
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-// import Navbar from './Navbar'; // Import the Navbar component
+import Navbar from './Navbar'; // Import the Navbar component
 
 const BackgroundContainer = styled.div`
   background: url(${backgroundImage}) no-repeat center center;
@@ -184,7 +184,7 @@ const Hero = () => {
   
     return (
       <>
-        {/* <Navbar /> */}
+        <Navbar />
         <BackgroundContainer>
           <HeroContent>
             <LeftSide>
