@@ -86,7 +86,7 @@ const Solutions = ({ generatedText }) => {
 
   return (
     <>
-      <Navbar /> Render the Navbar
+      <Navbar /> 
       <SolutionsContainer>
         <Title>Staretegy AI Helps helps you make<br /> your plan better and smarter</Title>
         <SubHeading>More than 40,000+ already made their plan with us—normal, better, and smarter.</SubHeading>
